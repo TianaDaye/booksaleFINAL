@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { FaInstagram, FaLinkedin, FaFacebook, FaCalendar } from 'react-icons/fa'; // Import icons
 
 const App = () => {
@@ -8,6 +7,7 @@ const App = () => {
   const [email, setEmail] = useState(''); // State for email input
   const [showFullText, setShowFullText] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [status, setStatus] = useState(''); // State to hold success/error messages
 
   const handlePurchase = () => {
     setShowModal(true);
@@ -26,7 +26,7 @@ const App = () => {
 
     // Email validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      alert('Please enter a valid email address.');
+      setStatus('Please enter a valid email address.');
       return;
     }
 
@@ -43,16 +43,15 @@ const App = () => {
       });
 
       if (response.ok) {
-        alert('Email sent successfully!');
+        setStatus('Email sent successfully!'); // Success message
+        setEmail(''); // Clear the email input
       } else {
-        alert('Failed to send email. Please try again.');
+        setStatus('Failed to send email. Please try again.'); // Failure message
       }
     } catch (error) {
-      alert('An error occurred. Please try again.');
+      setStatus('An error occurred. Please try again.'); // Catching error message
     }
   };
-
-
 
   return (
     <div className="font-sans bg-gray-50 min-h-screen flex flex-col items-center overflow-x-hidden">
@@ -115,6 +114,15 @@ const App = () => {
                 Submit
               </button>
             </form>
+
+            {/* Success/Error Message */}
+            {status && (
+              <div className="mt-4 text-center">
+                <p className={`text-lg ${status.includes('successfully') ? 'text-green-500' : 'text-red-500'}`}>
+                  {status}
+                </p>
+              </div>
+            )}
 
             <div className="flex justify-end">
               <button
