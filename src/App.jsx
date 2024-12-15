@@ -26,7 +26,7 @@ const App = () => {
 
     // Email validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setStatus('Please enter a valid email address.');
+      alert('Please enter a valid email address.');
       return;
     }
 
@@ -43,12 +43,12 @@ const App = () => {
       });
 
       if (response.ok) {
-        setStatus('Email sent successfully!');
+        alert('Email sent successfully!');
       } else {
-        setStatus('Failed to send email. Please try again.');
+        alert('Failed to send email. Please try again.');
       }
     } catch (error) {
-      setStatus('An error occurred. Please try again.');
+      alert('An error occurred. Please try again.');
     }
   };
 
