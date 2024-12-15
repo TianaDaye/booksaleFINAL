@@ -9,8 +9,8 @@ export default async function handler(req, res) {
     const { email } = req.body;  // The email provided in the request body
 
     // Ensure the user's email is valid
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      return res.status(400).json({ error: 'Invalid email address.' });
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required.' });
     }
 
     try {

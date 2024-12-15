@@ -21,35 +21,37 @@ const App = () => {
     setShowFullText((prev) => !prev);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     // Email validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      alert('Please enter a valid email address.');
+      setStatus('Please enter a valid email address.');
       return;
     }
 
-    console.log('Sending email:', email); // Log email to verify it is correct
-
-    // Send email to backend
-    fetch('/api/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }), // Send email in the request body
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Email sent successfully:', data);
-        alert('Email sent successfully!');
-      })
-      .catch((error) => {
-        console.error('Error sending email:', error);
-        alert('Failed to send email. Please try again.');
+    try {
+      // Send the email to backend (Postmark)
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }), // Send the user's email in the request body
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('Email sent successfully!');
+      } else {
+        setStatus(`Error: ${data.error || 'Something went wrong'}`);
+      }
+    } catch (error) {
+      setStatus('Failed to send email. Please try again.');
+    }
   };
+
 
   return (
     <div className="font-sans bg-gray-50 min-h-screen flex flex-col items-center overflow-x-hidden">
