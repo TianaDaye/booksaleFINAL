@@ -44,14 +44,14 @@ const App = () => {
     })
       .then((response) => {
         if (response.ok) {
-          setStatus('Your email was sent successfully!'); // Show success message
           setEmail(''); // Clear the email input field
+          alert('Your email was sent successfully!');
         } else {
-          setStatus('Failed to send email. Please try again later.'); // Handle failure
+          alert('Failed to send email. Please try again later.'); // Handle failure
         }
       })
       .catch(() => {
-        setStatus('There was an error. Please try again later.'); // Catch any network errors
+        alert('There was an error. Please try again later.'); // Catch any network errors
       });
   };
 
