@@ -4,6 +4,7 @@ import { ServerClient } from 'postmark';
 const client = new ServerClient(process.env.POSTMARK_API_KEY);
 
 export default async function handler(req, res) {
+  console.log('API is being hit!'); 
   if (req.method === 'POST') {
     const { email } = req.body;  // The email provided in the request body
 
