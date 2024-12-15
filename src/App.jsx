@@ -30,27 +30,28 @@ const App = () => {
       return;
     }
 
-    try {
-      // Send the email to backend (Postmark)
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }), // Send the user's email in the request body
-      });
+    const formData = new FormData();
+    formData.append('email', email);  // Send user's email
 
-      const data = await response.json();
+    // Replace with your Formspree form endpoint
+    const formspreeUrl = 'https://formspree.io/f/mpwzgzby';
+
+    try {
+      const response = await fetch(formspreeUrl, {
+        method: 'POST',
+        body: formData,
+      });
 
       if (response.ok) {
         setStatus('Email sent successfully!');
       } else {
-        setStatus(`Error: ${data.error || 'Something went wrong'}`);
+        setStatus('Failed to send email. Please try again.');
       }
     } catch (error) {
-      setStatus('Failed to send email. Please try again.');
+      setStatus('An error occurred. Please try again.');
     }
   };
+
 
 
   return (
