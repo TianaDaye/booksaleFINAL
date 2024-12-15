@@ -30,28 +30,30 @@ const App = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('email', email);  // Send user's email
+    setStatus('Sending...');  // You can show a "Sending..." status while the form is submitting.
 
-    // Replace with your Formspree form endpoint
-    const formspreeUrl = 'https://formspree.io/f/mpwzgzby';
+    // Create a simple form to submit data to Formspree
+    const form = e.target;
 
-    try {
-      const response = await fetch(formspreeUrl, {
-        method: 'POST',
-        body: formData,
+    const formData = new FormData(form);
+    formData.append('email', email);  // Add the user's email to the form data
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          setStatus('Your email was sent successfully!'); // Show success message
+          setEmail(''); // Clear the email input field
+        } else {
+          setStatus('Failed to send email. Please try again later.'); // Handle failure
+        }
+      })
+      .catch(() => {
+        setStatus('There was an error. Please try again later.'); // Catch any network errors
       });
-
-      if (response.ok) {
-        setStatus('Email sent successfully!');
-      } else {
-        setStatus('Failed to send email. Please try again.');
-      }
-    } catch (error) {
-      setStatus('An error occurred. Please try again.');
-    }
   };
-
 
 
   return (
@@ -95,13 +97,15 @@ const App = () => {
               Once payment is received via Zelle, you will receive the book directly to your inbox.
             </p>
             
-            <form onSubmit={handleFormSubmit} className="space-y-4">
+            <form onSubmit={handleFormSubmit} action="https://formspree.io/f/mpwzgzby" method="POST" className="space-y-4">
               <input
                 className="p-3 border rounded-lg w-full"
                 type="email"
-                placeholder="Your Email"
+                name='email'
+                placeholder="Enter your Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
               <div className="bg-blue-100 text-blue-700 p-4 rounded-md text-center text-sm">
                 <p><strong>Zelle Payment Info:</strong></p>
