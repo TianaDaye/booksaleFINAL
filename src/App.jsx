@@ -33,15 +33,20 @@ const App = () => {
     console.log('Sending email:', email); // Log email to verify it is correct
 
     // Send email to backend
-    axios
-      .post('/api/send-email', { email })  // Adjust the endpoint as needed for your backend
-      .then((response) => {
-        console.log('Email sent successfully:', response); // Log success response
-        alert('Your email was sent successfully!');
-        closeModal(); // Close modal after success
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }), // Send email in the request body
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Email sent successfully:', data);
+        alert('Email sent successfully!');
       })
       .catch((error) => {
-        console.error('Error sending email:', error); // Log error
+        console.error('Error sending email:', error);
         alert('Failed to send email. Please try again.');
       });
   };
