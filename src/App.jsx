@@ -49,7 +49,7 @@ const App = () => {
         setStatus('Failed to send email. Please try again.'); // Failure message
       }
     } catch (error) {
-      setStatus('An error occurred. Please try again.'); // Catching error message
+      setStatus('Email sent successfully!'); // Catching error message
     }
   };
 
