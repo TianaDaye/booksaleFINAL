@@ -26,11 +26,9 @@ const App = () => {
 
     // Email validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setStatus('Please enter a valid email address.');
+      alert('Please enter a valid email address.');
       return;
     }
-
-    setStatus('Sending...');  // You can show a "Sending..." status while the form is submitting.
 
     // Create a simple form to submit data to Formspree
     const form = e.target;
