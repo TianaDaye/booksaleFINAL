@@ -34,7 +34,7 @@ const App = () => {
     formData.append('email', email);  // Send user's email
 
     // Replace with your Formspree form endpoint
-    const formspreeUrl = 'https://formspree.io/f/mpwzgzby';
+    const formspreeUrl = 'https://formspree.io/f/xwpkdppw';
 
     try {
       const response = await fetch(formspreeUrl, {
