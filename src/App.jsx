@@ -26,32 +26,32 @@ const App = () => {
 
     // Email validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      alert('Please enter a valid email address.');
+      setStatus('Please enter a valid email address.');
       return;
     }
 
-    // Create a simple form to submit data to Formspree
-    const form = e.target;
+    const formData = new FormData();
+    formData.append('email', email);  // Send user's email
 
-    const formData = new FormData(form);
-    formData.append('email', email);  // Add the user's email to the form data
+    // Replace with your Formspree form endpoint
+    const formspreeUrl = 'https://formspree.io/f/mpwzgzby';
 
-    fetch(form.action, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (response.ok) {
-          setEmail(''); // Clear the email input field
-          alert('Your email was sent successfully!');
-        } else {
-          alert('Failed to send email. Please try again later.'); // Handle failure
-        }
-      })
-      .catch(() => {
-        alert('There was an error. Please try again later.'); // Catch any network errors
+    try {
+      const response = await fetch(formspreeUrl, {
+        method: 'POST',
+        body: formData,
       });
+
+      if (response.ok) {
+        setStatus('Email sent successfully!');
+      } else {
+        setStatus('Failed to send email. Please try again.');
+      }
+    } catch (error) {
+      setStatus('An error occurred. Please try again.');
+    }
   };
+
 
 
   return (
@@ -95,15 +95,13 @@ const App = () => {
               Once payment is received via Zelle, you will receive the book directly to your inbox.
             </p>
             
-            <form onSubmit={handleFormSubmit} action="https://formspree.io/f/mpwzgzby" method="POST" className="space-y-4">
+            <form onSubmit={handleFormSubmit} className="space-y-4">
               <input
                 className="p-3 border rounded-lg w-full"
                 type="email"
-                name='email'
-                placeholder="Enter your Email"
+                placeholder="Your Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
               <div className="bg-blue-100 text-blue-700 p-4 rounded-md text-center text-sm">
                 <p><strong>Zelle Payment Info:</strong></p>
